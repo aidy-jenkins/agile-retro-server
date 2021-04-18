@@ -26,12 +26,12 @@ namespace AgileRetroServer.Controllers
         }
 
         [HttpPost("/room/{roomCode}/categories")]
-        public void UpdateCategories(string roomCode, [FromBody] UpdateRequest request)
+        public void UpdateCategories(string roomCode, [FromBody] AddCategoriesRequest request)
         {
             _categoryRepository.AddCategories(roomCode, request.Categories);
         }
 
-        public class UpdateRequest
+        public class AddCategoriesRequest
         {
             public IEnumerable<string> Categories {get; set;}
         }

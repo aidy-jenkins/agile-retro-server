@@ -6,7 +6,6 @@ using System.Runtime.Caching;
 namespace AgileRetroServer.Repositories 
 {
 
-
     public interface ICategoryRepository 
     {
         void AddCategories(string roomCode, IEnumerable<string> categories);
