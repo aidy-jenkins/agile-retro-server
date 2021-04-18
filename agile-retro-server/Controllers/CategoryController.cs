@@ -17,12 +17,23 @@ namespace AgileRetroServer.Controllers
         
         public CategoryController(ICategoryRepository categoryRepository, ILogger<CategoryController> logger) 
             => (_categoryRepository, _logger) = (categoryRepository, logger);
-            
+
 
         [HttpGet("/room/{roomCode}/categories")]
         public IEnumerable<string> GetCategories(string roomCode)
         {
             return _categoryRepository.GetCategories(roomCode);
+        }
+
+        [HttpPost("/room/{roomCode}/categories")]
+        public void UpdateCategories(string roomCode, [FromBody] UpdateRequest request)
+        {
+            _categoryRepository.AddCategories(roomCode, request.Categories);
+        }
+
+        public class UpdateRequest
+        {
+            public IEnumerable<string> Categories {get; set;}
         }
     }
 }
