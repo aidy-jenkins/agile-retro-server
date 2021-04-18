@@ -1,2 +1,4 @@
 agile-retro-server/bin
 agile-retro-server/obj
+.vscode
+agile-retro-server/.vscode
