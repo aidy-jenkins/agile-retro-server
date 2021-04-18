@@ -17,6 +17,11 @@ namespace AgileRetroServer
 {
     public class Startup
     {
+        public class CorsSettings 
+        {
+            public IEnumerable<string> AllowedOrigins {get; set;}
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,8 +39,17 @@ namespace AgileRetroServer
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "agile_retro_server", Version = "v1" });
             });
 
+            var corsSettings = new CorsSettings();
+            Configuration.GetSection("Cors").Bind(corsSettings);
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IItemRepository, ItemRepository>();
+            services.AddCors(options => options
+                .AddDefaultPolicy(builder => builder
+                    .SetIsOriginAllowed(origin => corsSettings.AllowedOrigins.Contains(origin))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +65,8 @@ namespace AgileRetroServer
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseCors();
 
             app.UseAuthorization();
 
@@ -58,6 +74,7 @@ namespace AgileRetroServer
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

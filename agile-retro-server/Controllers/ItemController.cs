@@ -18,7 +18,6 @@ namespace AgileRetroServer.Controllers
         public ItemController(IItemRepository itemRepository, ILogger<CategoryController> logger) 
             => (_itemRepository, _logger) = (itemRepository, logger);
 
-
         [HttpGet("/room/{roomCode}/category/{category}/items")]
         public IEnumerable<string> GetItems(string roomCode, string category)
         {
