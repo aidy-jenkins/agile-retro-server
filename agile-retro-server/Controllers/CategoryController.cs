@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AgileRetroServer.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,22 +12,17 @@ namespace AgileRetroServer.Controllers
     [Route("[controller]")]
     public class CategoryController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<CategoryController> _logger;
+        private ICategoryRepository _categoryRepository;
+        
+        public CategoryController(ICategoryRepository categoryRepository, ILogger<CategoryController> logger) 
+            => (_categoryRepository, _logger) = (categoryRepository, logger);
+            
 
-        public CategoryController(ILogger<CategoryController> logger)
+        [HttpGet("/room/{roomCode}/categories")]
+        public IEnumerable<string> GetCategories(string roomCode)
         {
-            _logger = logger;
-        }
-
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return Summaries;
+            return _categoryRepository.GetCategories(roomCode);
         }
     }
 }
