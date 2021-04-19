@@ -12,6 +12,14 @@ namespace AgileRetroServer.Controllers
     [Route("[controller]")]
     public class CategoryController : ControllerBase
     {
+        private readonly string[] DefaultCategories = new [] 
+        {
+            "Good things",
+            "Bad things",
+            "Room for improvement",
+            "Takeaways"
+        };
+
         private readonly ILogger<CategoryController> _logger;
         private ICategoryRepository _categoryRepository;
         
@@ -22,7 +30,11 @@ namespace AgileRetroServer.Controllers
         [HttpGet("/room/{roomCode}/categories")]
         public IEnumerable<string> GetCategories(string roomCode)
         {
-            return _categoryRepository.GetCategories(roomCode);
+            var categories = _categoryRepository.GetCategories(roomCode);
+            if(categories.Any())
+                return categories;
+
+            return DefaultCategories;
         }
 
         [HttpPost("/room/{roomCode}/categories")]
